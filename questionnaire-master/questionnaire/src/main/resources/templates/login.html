@@ -1,0 +1,32 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>ログイン画面</title>
+    </head>
+
+    <body>
+        <h1>ログイン画面</h1>
+        <form th:action="@{/check}" method="post" th:object="${adminModel}">
+            <th:block th:if="${isLoginFailed == true}">
+                <p style="color:red">ID・またはパスワードが違います</p>
+            </th:block>
+            <div class="name">
+                <p>ID</p>
+                <input type="text" th:field="*{name}">
+            </div>
+            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+            <div class="password">
+                <p>パスワード</p>
+                <input type="password" th:field="*{password}">
+            </div>
+            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+            <div class="check_button">
+                <input type="submit" value="ログイン">
+            </div>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>アンケート</title>
+    </head>
+
+    <body>
+        <h1>アンケート</h1>
+        <form th:action="@{/confirm}" method="post" th:object="${questionAnswerModel}">
+            <div class="question1">
+                <p>好きな肉は？</p>
+                <th:block th:each="meatList : ${meatList}" >
+                    <label>
+                        <input type="radio" th:field="*{like_meat}" th:value="${meatList.getMeatId}" th:text="${meatList.getName}">
+                    </label>
+                </th:block>
+            </div>
+            <div style="color:red" th:if="${#fields.hasErrors('like_meat')}" th:errors="*{like_meat}"></div>
+
+            <div class="question2">
+                <p>好きな野菜は？(複数回答可)</p>
+                <th:block th:each="vegetableList : ${vegetableList}" >
+                    <label>
+                        <input type="checkbox" th:field="*{like_veg}" th:value="${vegetableList.getVegetableId}" th:text="${vegetableList.getName}">
+                    </label>
+                </th:block>
+            </div>
+            <div style="color:red" th:if="${#fields.hasErrors('like_veg')}" th:errors="*{like_veg}"></div>
+
+            <div class="question3">
+                <p>好きなアイドルは？</p>
+                <input type="text" th:field="*{like_idol}">
+            </div>
+            <div style="color:red" th:if="${#fields.hasErrors('like_idol')}" th:errors="*{like_idol}"></div>
+
+            <div class="check_button">
+                <input type="submit" value="入力確認">
+            </div>
+        </form>
+    </body>
+</html>

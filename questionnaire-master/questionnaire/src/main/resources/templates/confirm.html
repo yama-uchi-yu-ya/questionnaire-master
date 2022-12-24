@@ -1,0 +1,49 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>回答確認画面</title>
+    </head>
+
+    <body>
+        <h1>アンケート回答確認</h1>
+        <form th:action="@{/complete}" method="post" th:object="${questionAnswerModel}">
+            <div class="question1">
+                <p>好きな肉は？</p>
+                <th:block th:each="meatList : ${meatList}">
+                    <p th:if="${questionAnswerModel.like_meat == meatList.getMeatId}">
+                        <span th:value="${meatList.getMeatId}" th:text="${meatList.getName}"></span>
+                    </p>
+                </th:block>
+                <input type="hidden" name="like_meat" th:value="*{like_meat}">
+            </div>
+
+            <div class="question2">
+                <p>好きな野菜は？</p>
+                <th:block th:each="vegetableList : ${vegetableList}">
+                    <th:block th:each="choice_veg : *{like_veg}">
+                        <span th:if="${choice_veg == vegetableList.getVegetableId.toString()}"
+                              th:text="${vegetableList.getName}"></span>
+                    </th:block>
+                </th:block>
+                <th:block th:each="element, status : *{like_veg}">
+                    <input type="hidden" name="like_veg" th:value="${element}">
+                </th:block>
+            </div>
+
+            <div class="question3">
+                <p>好きなアイドルは？</p>
+                <span th:text="*{like_idol}"></span>
+                <input type="hidden" name="like_idol" th:value="*{like_idol}">
+            </div>
+
+            <div class="back_button">
+                <button type="button" onclick="history.back()">入力画面に戻る</button>
+            </div>
+
+            <div class="complete_button">
+                <input type="submit" name="complete" value="入力完了">
+            </div>
+        </form>
+    </body>
+</html>
