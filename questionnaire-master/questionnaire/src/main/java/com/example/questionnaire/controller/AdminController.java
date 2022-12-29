@@ -1,6 +1,7 @@
 package com.example.questionnaire.controller;
 
 import com.example.questionnaire.dao.AdminDao;
+import com.example.questionnaire.dao.ViewAnswerDao;
 import com.example.questionnaire.entity.ViewAnswer;
 import com.example.questionnaire.model.AdminModel;
 import com.example.questionnaire.repository.ViewAnswerRepository;
@@ -25,8 +26,7 @@ import java.util.Objects;
 
 @Controller
 public class AdminController {
-    private final AdminDao dao;
-
+    private AdminDao dao;
     @Autowired
     AdminController(AdminDao dao) {
         this.dao = dao;
@@ -57,26 +57,43 @@ public class AdminController {
         }
         System.out.println("ログイン成功！");
         Cookie cookie = new Cookie("loginUser", "userId");
-        cookie.setMaxAge(365 * 24 * 60 * 60);
+        cookie.setMaxAge(60 * 60);
         cookie.setPath("/");
         httpServletResponse.addCookie(cookie);
         return  "redirect:view";
     }
     
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    ModelAndView modelAndView(@CookieValue(value = "userID", required = false, defaultValue = "login")
-                              ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:question");
+    ModelAndView modelAndView(@CookieValue(value = "loginUser", required = false, defaultValue = "none") String cookieName,
+                              ModelAndView modelAndView, Pageable pageable) {
+        if (cookieName.equals("none")) {
+            System.out.println("ログインしてね");
+            modelAndView.setViewName("redirect:login");
+            return modelAndView;
+        }
+        System.out.println("viewに来たよ");
+        Page<ViewAnswer> pageList = repository.findAll(pageable);
+        List<ViewAnswer> answerList = pageList.getContent();
+        modelAndView.addObject("pages", pageList);
+        modelAndView.addObject("answers", answerList);
+        modelAndView.addObject("meatList", dao.meatList());
+        //*modelAndView.addObject("vegetableList", dao.vegetableList());
+        modelAndView.setViewName("view");
         return modelAndView;
     }
-    String view(Model model, Pageable pageable) {
-        System.out.println("viewに来たよ");
-            Page<ViewAnswer> pageList = repository.findAll(pageable);
-            List<ViewAnswer> answerList = pageList.getContent();
 
-            model.addAttribute("pages", pageList);
-            model.addAttribute("answers", answerList);
-            return "view";
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    String logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+        Cookie cookies[] = httpServletRequest.getCookies();
+        for (var cookie : cookies) {
+            if ("loginUser".equals(cookie.getName())) {
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                httpServletResponse.addCookie(cookie);
+            }
+        }
+        System.out.println("ログアウト成功");
+        return "redirect:login";
     }
 }
 

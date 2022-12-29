@@ -1,6 +1,6 @@
 package com.example.questionnaire.dao;
 
-import com.example.questionnaire.entity.Admin;
+import com.example.questionnaire.entity.*;
 import com.example.questionnaire.model.AdminModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -40,4 +40,30 @@ public class AdminDao {
         System.out.println("抽出失敗");
         return null;
     }
+    public List<Meat> meatList() {
+        String sql = ""
+                + "SELECT"
+                + " meat_id,"
+                + " name"
+                + " FROM"
+                + " meats";
+        RowMapper<Meat> rowMapper = new BeanPropertyRowMapper<Meat>(Meat.class);
+        List<Meat> meatList = jdbcTemplate.query(sql, rowMapper);
+
+        return meatList;
+    }
+
+    public List<Vegetable> vegetableList() {
+        String sql = ""
+                + "SELECT"
+                + " vegetable_id,"
+                + " name"
+                + " FROM"
+                + " vegetables";
+        RowMapper<Vegetable> rowMapper = new BeanPropertyRowMapper<Vegetable>(Vegetable.class);
+        List<Vegetable> vegetableList = jdbcTemplate.query(sql, rowMapper);
+
+        return vegetableList;
+    }
+
 }

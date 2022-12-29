@@ -16,7 +16,11 @@
             </tr>
             <tr th:each="answer:${answers}">
                 <td th:text="${answer.answer_id}"></td>
-                <td th:text="${answer.meat_id}"></td>
+                <th:block th:each="meatList : ${meatList}">
+                    <p th:if="${meatList.getMeatId == answer.meat_id}">
+                        <td th:text="${meatList.getName}"></td>
+                    </p>
+                </th:block>
                 <td th:text="${answer.vegetable_id}"></td>
                 <td th:text="${answer.idol_name}"></td>
             </tr>
@@ -41,7 +45,10 @@
                     &gt;&gt;
                 </a>
             </li>
-
         </ul>
+
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" name="logout" value="ログアウト">
+        </form>
     </body>
 </html>
