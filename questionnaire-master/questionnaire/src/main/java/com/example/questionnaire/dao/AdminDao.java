@@ -66,4 +66,16 @@ public class AdminDao {
         return vegetableList;
     }
 
+    public List<ViewVegetableAnswer> viewVegetableAnswerList() {
+        String sql = ""
+                + "SELECT"
+                + " vegetable_id,"
+                + " answer_id"
+                + " FROM"
+                + " answer_vegetables";
+        RowMapper<ViewVegetableAnswer> rowMapper = new BeanPropertyRowMapper<ViewVegetableAnswer>(ViewVegetableAnswer.class);
+        List<ViewVegetableAnswer> viewVegetableAnswerList = jdbcTemplate.query(sql, rowMapper);
+
+        return viewVegetableAnswerList;
+    }
 }

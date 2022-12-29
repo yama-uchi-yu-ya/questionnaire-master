@@ -1,7 +1,6 @@
 package com.example.questionnaire.controller;
 
 import com.example.questionnaire.dao.AdminDao;
-import com.example.questionnaire.dao.ViewAnswerDao;
 import com.example.questionnaire.entity.ViewAnswer;
 import com.example.questionnaire.model.AdminModel;
 import com.example.questionnaire.repository.ViewAnswerRepository;
@@ -77,7 +76,8 @@ public class AdminController {
         modelAndView.addObject("pages", pageList);
         modelAndView.addObject("answers", answerList);
         modelAndView.addObject("meatList", dao.meatList());
-        //*modelAndView.addObject("vegetableList", dao.vegetableList());
+        modelAndView.addObject("viewVegetableAnswers", dao.viewVegetableAnswerList());
+        modelAndView.addObject("vegetableList", dao.vegetableList());
         modelAndView.setViewName("view");
         return modelAndView;
     }

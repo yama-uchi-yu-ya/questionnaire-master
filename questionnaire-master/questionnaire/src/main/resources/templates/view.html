@@ -21,7 +21,22 @@
                         <td th:text="${meatList.getName}"></td>
                     </p>
                 </th:block>
-                <td th:text="${answer.vegetable_id}"></td>
+                <th:block th:each="vVA : ${viewVegetableAnswers}">
+                    <th:block th:each="vL : ${vegetableList}">
+                        <p th:if="${answer.answer_id == vVA.answer_id && vVA.vegetable_id == vL.getVegetableId}">
+                            <td th:text="${vL.getName}"></td>
+                        </p>
+                    </th:block>
+                </th:block>
+                <!--<th:block th:each="vVA : ${viewVegetableAnswers}">
+                    <p th:if="${answer.answer_id == vVA.answer_id}">
+                        <th:block th:each="vL : ${vegetableList}">
+                            <span th:if="${vVA.vegetable_id == vL.getVegetableId}">
+                                <td th:text="${vL.getName}"></td>
+                            </span>
+                        </th:block>
+                    </p>
+                </th:block>-->
                 <td th:text="${answer.idol_name}"></td>
             </tr>
         </table>
