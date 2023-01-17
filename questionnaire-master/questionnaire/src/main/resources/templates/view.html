@@ -13,31 +13,37 @@
                 <th>好きな肉</th>
                 <th>好きな野菜</th>
                 <th>好きなアイドル</th>
+                <th>削除ボタン</th>
             </tr>
+
             <tr th:each="answer:${answers}">
-                <td th:text="${answer.answer_id}"></td>
-                <th:block th:each="meatList : ${meatList}">
-                    <p th:if="${meatList.getMeatId == answer.meat_id}">
-                        <td th:text="${meatList.getName}"></td>
-                    </p>
-                </th:block>
-                <th:block th:each="vVA : ${viewVegetableAnswers}">
-                    <th:block th:each="vL : ${vegetableList}">
-                        <p th:if="${answer.answer_id == vVA.answer_id && vVA.vegetable_id == vL.getVegetableId}">
-                            <td th:text="${vL.getName}"></td>
+                <th:block th:if="${answer.is_deleted == 0}">
+                    <td>
+                        <a th:href="@{/update/{answer_id}(answer_id=${answer.answer_id})}">
+                            <label th:text="${answer.answer_id}"></label>
+                        </a>
+                    </td>
+                    <th:block th:each="meatList : ${meatList}">
+                        <p th:if="${meatList.meat_id == answer.meat_id}">
+                            <td th:text="${meatList.name}"></td>
                         </p>
                     </th:block>
-                </th:block>
-                <!--<th:block th:each="vVA : ${viewVegetableAnswers}">
-                    <p th:if="${answer.answer_id == vVA.answer_id}">
+                    <th:block th:each="vVA : ${viewVegetableAnswers}">
                         <th:block th:each="vL : ${vegetableList}">
-                            <span th:if="${vVA.vegetable_id == vL.getVegetableId}">
-                                <td th:text="${vL.getName}"></td>
-                            </span>
+                            <p th:if="${answer.answer_id == vVA.answer_id && vVA.vegetable_id == vL.vegetable_id}">
+                                <td th:text="${vL.name}"></td>
+                            </p>
                         </th:block>
-                    </p>
-                </th:block>-->
-                <td th:text="${answer.idol_name}"></td>
+                    </th:block>
+                    <td th:text="${answer.idol_name}"></td>
+                    </a>
+                    <td>
+                        <form th:action="@{delete}" method="post">
+                            <input type="hidden" name="answer_id" th:value="${answer.answer_id}">
+                            <input type="submit" value="削除">
+                        </form>
+                    </td>
+                </th:block>
             </tr>
         </table>
 

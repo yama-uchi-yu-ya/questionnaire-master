@@ -24,7 +24,8 @@ public class ViewAnswerDao {
                 + "SELECT"
                 + " answer_id,"
                 + " meat_id,"
-                + " idol_name"
+                + " idol_name,"
+                + " is_deleted"
                 + " FROM"
                 + " answers";
         RowMapper<ViewAnswer> rowMapper = new BeanPropertyRowMapper<ViewAnswer>(ViewAnswer.class);

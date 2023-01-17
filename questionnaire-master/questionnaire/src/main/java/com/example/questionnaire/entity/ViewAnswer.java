@@ -12,6 +12,8 @@ public class ViewAnswer {
     public int meat_id;
     @Column
     public String idol_name;
+    @Column
+    public int is_deleted;
     @Transient
     public List<Integer> vegetable_id;
 
@@ -24,6 +26,11 @@ public class ViewAnswer {
     public String getIdol_name() {
         return this.idol_name;
     }
+
+    public int getIs_deleted() {
+        return is_deleted;
+    }
+
     public List<Integer> getVegetable_id() {
         return this.vegetable_id;
     }
@@ -37,6 +44,11 @@ public class ViewAnswer {
     public void setIdol_name(String idol_name) {
         this.idol_name = idol_name;
     }
+
+    public void setIs_deleted(int is_deleted) {
+        this.is_deleted = is_deleted;
+    }
+
     public void setVegetable_id(List<Integer> vegetable_id) {
         this.vegetable_id = vegetable_id;
     }
@@ -44,10 +56,11 @@ public class ViewAnswer {
     public ViewAnswer() {
     }
 
-    public ViewAnswer(int answer_id, int meat_id, String idol_name, List<Integer> vegetable_id) {
+    public ViewAnswer(int answer_id, int meat_id, String idol_name, int is_deleted, List<Integer> vegetable_id) {
         this.answer_id = answer_id;
         this.meat_id = meat_id;
         this.idol_name = idol_name;
+        this.is_deleted = is_deleted;
         this.vegetable_id = vegetable_id;
     }
 }

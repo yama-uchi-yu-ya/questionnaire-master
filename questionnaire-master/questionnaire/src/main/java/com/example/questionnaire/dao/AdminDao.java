@@ -78,4 +78,12 @@ public class AdminDao {
 
         return viewVegetableAnswerList;
     }
+
+    public void delete(int answer_id) {
+        System.out.println("deleteしてるよ");
+        System.out.println(answer_id);
+        jdbcTemplate.update("UPDATE answers SET is_deleted = '1' WHERE answer_id = ?", answer_id);
+        jdbcTemplate.update("UPDATE answer_vegetables SET is_deleted = '1' WHERE answer_id = ?", answer_id);
+
+    }
 }

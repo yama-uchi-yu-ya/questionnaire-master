@@ -11,10 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -94,6 +91,17 @@ public class AdminController {
         }
         System.out.println("ログアウト成功");
         return "redirect:login";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    String delete(@RequestParam int answer_id) {
+        dao.delete(answer_id);
+        return "redirect:view";
+    }
+
+    @RequestMapping(value = "/update/{answer_id}", method = RequestMethod.GET)
+    String update() {
+        return "update";
     }
 }
 
