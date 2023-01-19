@@ -1,31 +1,18 @@
 package com.example.questionnaire.entity;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "answers")
-public class ViewAnswer {
-    @Id
+public class UpdateAnswer {
     public int answer_id;
-    @Column
     public int meat_id;
-    @Column
     public String idol_name;
-    @Column
-    public int is_deleted;
 
     public int getAnswer_id() {
         return this.answer_id;
     }
     public int getMeat_id() {
-        return this.meat_id;
+        return meat_id;
     }
     public String getIdol_name() {
-        return this.idol_name;
-    }
-
-    public int getIs_deleted() {
-        return is_deleted;
+        return idol_name;
     }
 
     public void setAnswer_id(int answer_id) {
@@ -37,19 +24,12 @@ public class ViewAnswer {
     public void setIdol_name(String idol_name) {
         this.idol_name = idol_name;
     }
-
-    public void setIs_deleted(int is_deleted) {
-        this.is_deleted = is_deleted;
+    public  UpdateAnswer() {
     }
 
-
-    public ViewAnswer() {
-    }
-
-    public ViewAnswer(int answer_id, int meat_id, String idol_name, int is_deleted) {
+    public UpdateAnswer(int answer_id, int meat_id, String idol_name) {
         this.answer_id = answer_id;
         this.meat_id = meat_id;
         this.idol_name = idol_name;
-        this.is_deleted = is_deleted;
     }
 }

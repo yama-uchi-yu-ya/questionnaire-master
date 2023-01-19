@@ -80,10 +80,40 @@ public class AdminDao {
     }
 
     public void delete(int answer_id) {
-        System.out.println("deleteしてるよ");
-        System.out.println(answer_id);
+        System.out.println("回答番号" + answer_id + "をdeleteしたよ");
         jdbcTemplate.update("UPDATE answers SET is_deleted = '1' WHERE answer_id = ?", answer_id);
         jdbcTemplate.update("UPDATE answer_vegetables SET is_deleted = '1' WHERE answer_id = ?", answer_id);
 
+    }
+
+    public List<UpdateAnswer> updateAnswerList(int answer_id) {
+        String sql = ""
+                + "SELECT"
+                + " answer_id,"
+                + " meat_id,"
+                + " idol_name"
+                + " FROM"
+                + " answers"
+                + " WHERE"
+                + " answer_id = ?";
+        RowMapper<UpdateAnswer> rowMapper = new BeanPropertyRowMapper<UpdateAnswer>(UpdateAnswer.class);
+        List<UpdateAnswer> updateAnswerList = jdbcTemplate.query(sql, rowMapper, answer_id);
+
+        return updateAnswerList;
+    }
+
+    public List<UpdateVegetableAnswer> updateVegetableAnswerList(int answer_id) {
+        String sql = ""
+                + "SELECT"
+                + " answer_id,"
+                + " vegetable_id"
+                + " FROM"
+                + " answer_vegetables"
+                + " WHERE"
+                + " answer_id = ?";
+        RowMapper<UpdateVegetableAnswer> rowMapper = new BeanPropertyRowMapper<UpdateVegetableAnswer>(UpdateVegetableAnswer.class);
+        List<UpdateVegetableAnswer> updateVegetableAnswerList = jdbcTemplate.query(sql, rowMapper, answer_id);
+
+        return updateVegetableAnswerList;
     }
 }

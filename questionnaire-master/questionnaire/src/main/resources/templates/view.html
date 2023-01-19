@@ -25,17 +25,29 @@
                     </td>
                     <th:block th:each="meatList : ${meatList}">
                         <p th:if="${meatList.meat_id == answer.meat_id}">
-                            <td th:text="${meatList.name}"></td>
+                            <td>
+                                <a th:href="@{/update/{answer_id}(answer_id=${answer.answer_id})}">
+                                    <label th:text="${meatList.name}"></label>
+                                </a>
+                            </td>
                         </p>
                     </th:block>
                     <th:block th:each="vVA : ${viewVegetableAnswers}">
                         <th:block th:each="vL : ${vegetableList}">
                             <p th:if="${answer.answer_id == vVA.answer_id && vVA.vegetable_id == vL.vegetable_id}">
-                                <td th:text="${vL.name}"></td>
+                                <td>
+                                    <a th:href="@{/update/{answer_id}(answer_id=${answer.answer_id})}">
+                                        <label th:text="${vL.name}"></label>
+                                    </a>
+                                </td>
                             </p>
                         </th:block>
                     </th:block>
-                    <td th:text="${answer.idol_name}"></td>
+                    <td>
+                        <a th:href="@{/update/{answer_id}(answer_id=${answer.answer_id})}">
+                            <label th:text="${answer.idol_name}"></label>
+                        </a>
+                    </td>
                     </a>
                     <td>
                         <form th:action="@{delete}" method="post">

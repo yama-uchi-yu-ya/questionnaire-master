@@ -3,6 +3,7 @@ package com.example.questionnaire.controller;
 import com.example.questionnaire.dao.AdminDao;
 import com.example.questionnaire.entity.ViewAnswer;
 import com.example.questionnaire.model.AdminModel;
+import com.example.questionnaire.model.UpdateAnswerModel;
 import com.example.questionnaire.repository.ViewAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -100,7 +101,12 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/update/{answer_id}", method = RequestMethod.GET)
-    String update() {
+    String update(@RequestParam int answer_id, Model model) {
+        model.addAttribute("updateAnswerModel", new UpdateAnswerModel());
+        model.addAttribute("updateAnswer", dao.updateAnswerList(answer_id));
+        model.addAttribute("updateVegetableAnswer", dao.updateVegetableAnswerList(answer_id));
+        model.addAttribute("meatList", dao.meatList());
+        model.addAttribute("vegetableList", dao.vegetableList());
         return "update";
     }
 }
