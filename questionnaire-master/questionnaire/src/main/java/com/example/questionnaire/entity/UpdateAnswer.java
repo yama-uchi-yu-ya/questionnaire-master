@@ -6,7 +6,7 @@ public class UpdateAnswer {
     public String idol_name;
 
     public int getAnswer_id() {
-        return this.answer_id;
+        return answer_id;
     }
     public int getMeat_id() {
         return meat_id;

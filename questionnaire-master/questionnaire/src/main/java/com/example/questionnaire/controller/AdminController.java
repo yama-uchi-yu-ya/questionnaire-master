@@ -101,7 +101,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/update/{answer_id}", method = RequestMethod.GET)
-    String update(@RequestParam int answer_id, Model model) {
+    String update(@PathVariable("answer_id") int answer_id, Model model) {
         model.addAttribute("updateAnswerModel", new UpdateAnswerModel());
         model.addAttribute("updateAnswer", dao.updateAnswerList(answer_id));
         model.addAttribute("updateVegetableAnswer", dao.updateVegetableAnswerList(answer_id));

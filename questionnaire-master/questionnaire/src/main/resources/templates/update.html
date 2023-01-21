@@ -14,30 +14,32 @@
                     <p>好きな肉は？</p>
                     <th:block th:each="meatList : ${meatList}">
                         <label>
-                            <input type="radio" th:fieald="*{like_meat}" th:value="meatList.getMeatId" th:text="${meatList.getName}" th:checked="${meatList.getMeatId == uA.getMeatId}">
+                            <input type="radio" th:fieald="*{like_meat}" th:value="meatList.getMeatId" th:text="${meatList.getName}" th:checked="${meatList.getMeatId == uA.getMeat_id}">
                         </label>
                     </th:block>
                 </div>
                 <div style="color:red" th:if="${#fields.hasErrors('like_meat')}" th:errors="*{like_meat}"></div>
-
+            </th:block>
+            <th:block th:each="uVA : ${updateVegetableAnswer}">
                 <div class="question2">
                     <p>好きな野菜は？(複数回答可)</p>
                     <th:block th:each="vegetableList : ${vegetableList}">
-                        <th:block th:each="uVA : ${updateVegetableAnswer}">
-                            <label>
-                                <input type="checkbox" th:field="*{like_veg}" th:value="${vegetableList.getVegetableId}" th:text="${vegetableList.getName}" th:checked="${vegetableList.getVegetableId == uVA.getVegetableId}">
-                            </label>
-                        </th:block>
+                        <label>
+                            <input type="checkbox" th:field="*{like_veg}" th:value="vegetableList.getVegetableId" th:text="${vegetableList.getName}" th:checked="${vegetableList.getVegetableId == uVA.getVegetable_id}">
+                        </label>
                     </th:block>
                 </div>
                 <div style="color:red" th:if="${#fields.hasErrors('like_veg')}" th:errors="*{like_veg}"></div>
-
+            </th:block>
+            <th:block th:each="uA : ${updateAnswer}">
                 <div class="question3">
                     <p>好きなアイドルは？</p>
-                    <input type="text" th:field="*{like_idol}" th:text="uA.like_idol">
+                    <input type="text"th:name="*{like_idol}" th:value="${uA.idol_name}">
                 </div>
                 <div style="color:red" th:if="${#fields.hasErrors('like_idol')}" th:errors="*{like_idol}"></div>
             </th:block>
+            <button type="button" onclick="history.back()">回答一覧に戻る</button>
+            <input type="submit" name="doUpdate" value="回答編集">
         </form>
     </body>
 </html>
