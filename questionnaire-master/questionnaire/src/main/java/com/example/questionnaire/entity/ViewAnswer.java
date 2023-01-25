@@ -12,7 +12,7 @@ public class ViewAnswer {
     @Column
     public String idol_name;
     @Column
-    public int is_deleted;
+    public int isDeleted;
 
     public int getAnswer_id() {
         return this.answer_id;
@@ -24,8 +24,8 @@ public class ViewAnswer {
         return this.idol_name;
     }
 
-    public int getIs_deleted() {
-        return is_deleted;
+    public int getIsDeleted() {
+        return isDeleted;
     }
 
     public void setAnswer_id(int answer_id) {
@@ -38,18 +38,18 @@ public class ViewAnswer {
         this.idol_name = idol_name;
     }
 
-    public void setIs_deleted(int is_deleted) {
-        this.is_deleted = is_deleted;
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
 
     public ViewAnswer() {
     }
 
-    public ViewAnswer(int answer_id, int meat_id, String idol_name, int is_deleted) {
+    public ViewAnswer(int answer_id, int meat_id, String idol_name, int isDeleted) {
         this.answer_id = answer_id;
         this.meat_id = meat_id;
         this.idol_name = idol_name;
-        this.is_deleted = is_deleted;
+        this.isDeleted = isDeleted;
     }
 }

@@ -47,7 +47,8 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             System.out.println("バリデーションエラーだよ");
             return "login";
-        } else if (Objects.isNull(dao.checkOne(adminModel))) {
+        }
+        if (Objects.isNull(dao.checkOne(adminModel))) {
             System.out.println("ID・パスワードが違うよ");
             model.addAttribute("isLoginFailed", true);
             return "login";
@@ -61,7 +62,7 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    ModelAndView modelAndView(@CookieValue(value = "loginUser", required = false, defaultValue = "none") String cookieName,
+    ModelAndView view(@CookieValue(value = "loginUser", required = false, defaultValue = "none") String cookieName,
                               ModelAndView modelAndView, Pageable pageable) {
         if (cookieName.equals("none")) {
             System.out.println("ログインしてね");
@@ -69,7 +70,7 @@ public class AdminController {
             return modelAndView;
         }
         System.out.println("viewに来たよ");
-        Page<ViewAnswer> pageList = repository.findAll(pageable);
+        Page<ViewAnswer> pageList = repository.findByIsDeleted(pageable, 0);
         List<ViewAnswer> answerList = pageList.getContent();
         modelAndView.addObject("pages", pageList);
         modelAndView.addObject("answers", answerList);
@@ -101,13 +102,35 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/update/{answer_id}", method = RequestMethod.GET)
-    String update(@PathVariable("answer_id") int answer_id, Model model) {
-        model.addAttribute("updateAnswerModel", new UpdateAnswerModel());
-        model.addAttribute("updateAnswer", dao.updateAnswerList(answer_id));
-        model.addAttribute("updateVegetableAnswer", dao.updateVegetableAnswerList(answer_id));
-        model.addAttribute("meatList", dao.meatList());
-        model.addAttribute("vegetableList", dao.vegetableList());
-        return "update";
+    ModelAndView update(@CookieValue(value = "loginUser", required = false, defaultValue = "none") String cookieName,
+                        @PathVariable("answer_id") int answer_id, ModelAndView modelAndView) {
+        if (cookieName.equals("none")) {
+            System.out.println("ログインしてね");
+            modelAndView.setViewName("redirect:login");
+            return modelAndView;
+        }
+        modelAndView.addObject("updateAnswerModel", new UpdateAnswerModel());
+        modelAndView.addObject("updateAnswer", dao.updateAnswerList(answer_id));
+        modelAndView.addObject("updateVegetableAnswer", dao.updateVegetableAnswerList(answer_id));
+        modelAndView.addObject("meatList", dao.meatList());
+        modelAndView.addObject("vegetableList", dao.vegetableList());
+        modelAndView.setViewName("update");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/doUpdate", method = RequestMethod.POST)
+    String doUpdate(@Validated
+                    @ModelAttribute("updateAnswerModel") UpdateAnswerModel updateAnswerModel,
+                    BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("updateAnswer", updateAnswerModel);
+            model.addAttribute("updateVegetableAnswer", updateAnswerModel.getVegetable_id());
+            model.addAttribute("meatList", dao.meatList());
+            model.addAttribute("vegetableList", dao.vegetableList());
+            return "update";
+        }
+        dao.update(updateAnswerModel);
+        return "redirect:view";
     }
 }
 

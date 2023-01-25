@@ -2,6 +2,7 @@ package com.example.questionnaire.dao;
 
 import com.example.questionnaire.entity.*;
 import com.example.questionnaire.model.AdminModel;
+import com.example.questionnaire.model.UpdateAnswerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -9,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -72,7 +75,9 @@ public class AdminDao {
                 + " vegetable_id,"
                 + " answer_id"
                 + " FROM"
-                + " answer_vegetables";
+                + " answer_vegetables"
+                + " WHERE "
+                + " is_deleted = 0";
         RowMapper<ViewVegetableAnswer> rowMapper = new BeanPropertyRowMapper<ViewVegetableAnswer>(ViewVegetableAnswer.class);
         List<ViewVegetableAnswer> viewVegetableAnswerList = jdbcTemplate.query(sql, rowMapper);
 
@@ -102,18 +107,46 @@ public class AdminDao {
         return updateAnswerList;
     }
 
-    public List<UpdateVegetableAnswer> updateVegetableAnswerList(int answer_id) {
+    public List<Integer> updateVegetableAnswerList(int answer_id) {
         String sql = ""
                 + "SELECT"
-                + " answer_id,"
                 + " vegetable_id"
                 + " FROM"
                 + " answer_vegetables"
                 + " WHERE"
-                + " answer_id = ?";
+                + " answer_id = ?"
+                + " AND "
+                + " is_deleted = 0";
         RowMapper<UpdateVegetableAnswer> rowMapper = new BeanPropertyRowMapper<UpdateVegetableAnswer>(UpdateVegetableAnswer.class);
         List<UpdateVegetableAnswer> updateVegetableAnswerList = jdbcTemplate.query(sql, rowMapper, answer_id);
 
-        return updateVegetableAnswerList;
+        List<Integer> answerVegetableIdList = new ArrayList<>();
+        updateVegetableAnswerList.forEach(updateVegetableAnswer -> {
+            answerVegetableIdList.add(updateVegetableAnswer.getVegetable_id());
+        });
+
+        return answerVegetableIdList;
+    }
+
+    public void update(UpdateAnswerModel updateAnswerModel) {
+        jdbcTemplate.update("UPDATE answers SET meat_id = ?, idol_name = ?, update_date = ? WHERE answer_id = ?",
+                updateAnswerModel.getMeat_id(),
+                updateAnswerModel.getIdol_name(),
+                new Timestamp(System.currentTimeMillis()),
+                updateAnswerModel.getAnswer_id()
+                );
+
+        jdbcTemplate.update("UPDATE answer_vegetables SET is_deleted = '1' WHERE answer_id = ?", updateAnswerModel.getAnswer_id());
+
+        List like_veg_list = updateAnswerModel.getVegetable_id();
+        like_veg_list.forEach(vegetable_id -> {
+            jdbcTemplate.update("INSERT INTO answer_vegetables (vegetable_id, answer_id, is_deleted, create_date, update_date) VALUES (?, ?, ?, ?, ?)",
+                    vegetable_id,
+                    updateAnswerModel.getAnswer_id(),
+                    false,
+                    new Timestamp(System.currentTimeMillis()),
+                    new Timestamp(System.currentTimeMillis())
+            );
+        });
     }
 }
