@@ -14,7 +14,7 @@
                     <p>好きな肉は？</p>
                     <th:block th:each="meatList : ${meatList}">
                         <label>
-                            <input type="radio" id="meat_id + ${meatList.getMeatId}" name="meat_id" th:value="${meatList.getMeatId}" th:text="${meatList.getName}" th:checked="${#lists.contains(uA.getMeat_id, meatList.getMeatId)}">
+                            <input type="radio" name="meat_id" th:value="${meatList.getMeatId}" th:text="${meatList.getName}" th:checked="${#lists.contains(uA.getMeat_id, meatList.getMeatId)}">
                         </label>
                     </th:block>
                 </div>
@@ -22,10 +22,19 @@
 
                 <div class="question2">
                     <p>好きな野菜は？(複数回答可)</p>
-                    <th:block th:each="vegetableList : ${vegetableList}">
-                        <label>
-                            <input type="checkbox" id="vegetable_id + ${vegetableList.getVegetableId}" name="vegetable_id" th:value="${vegetableList.getVegetableId}" th:text="${vegetableList.getName}" th:checked="${#lists.contains(updateVegetableAnswer, vegetableList.getVegetableId)}">
-                        </label>
+                    <th:block th:if="${updateVegetableAnswer != null}">
+                        <th:block th:each="vegetableList : ${vegetableList}">
+                            <label>
+                                <input type="checkbox" name="vegetable_id" th:value="${vegetableList.getVegetableId}" th:text="${vegetableList.getName}" th:checked="${#lists.contains(updateVegetableAnswer, vegetableList.getVegetableId)}">
+                            </label>
+                        </th:block>
+                    </th:block>
+                    <th:block th:if="${updateVegetableAnswer == null}">
+                        <th:block th:each="vegetableList : ${vegetableList}">
+                            <label>
+                                <input type="checkbox" name="vegetable_id" th:value="${vegetableList.getVegetableId}" th:text="${vegetableList.getName}">
+                            </label>
+                        </th:block>
                     </th:block>
                 </div>
                 <div style="color:red" th:if="${#fields.hasErrors('vegetable_id')}" th:errors="*{vegetable_id}"></div>

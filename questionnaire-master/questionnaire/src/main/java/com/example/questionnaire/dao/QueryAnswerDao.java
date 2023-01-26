@@ -16,8 +16,10 @@ import java.util.List;
 public class QueryAnswerDao {
     private final JdbcTemplate jdbcTemplate;
 
+
     @Autowired
     QueryAnswerDao(JdbcTemplate jdbcTemplate) {
+        super();
         this.jdbcTemplate = jdbcTemplate;
     }
 

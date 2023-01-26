@@ -106,7 +106,7 @@ public class AdminController {
                         @PathVariable("answer_id") int answer_id, ModelAndView modelAndView) {
         if (cookieName.equals("none")) {
             System.out.println("ログインしてね");
-            modelAndView.setViewName("redirect:login");
+            modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }
         modelAndView.addObject("updateAnswerModel", new UpdateAnswerModel());
